@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <h3> Take a Selfie With JavaScript</h3>
+
+    <div class="container">
+
+        <div class="app">
+
+            <a href="#" id="start-camera" class="visible">Touch here to start the app.</a>
+            <video id="camera-stream"></video>
+            <img id="snap">
+
+            <p id="error-message"></p>
+
+            <div class="controls">
+                <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i
+                        class="material-icons">delete</i></a>
+                <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+                <a href="#" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i
+                        class="material-icons">file_download</i></a>
+            </div>
+
+            <!-- Hidden canvas element. Used for taking snapshot of video. -->
+            <canvas></canvas>
+
+        </div>
+
+    </div>
+
+    <script>
+        'use strict';
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const snap = document.getElementById("snap");
+        const errorMsgElement = document.querySelector('span#errorMsg');
+
+        const constraints = {
+            audio: false,
+            video: {
+                width: 720, height: 560
+            }
+        };
+
+        // Access webcam
+        async function init() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                handleSuccess(stream);
+            } catch (e) {
+                errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+            }
+        }
+
+        // Success
+        function handleSuccess(stream) {
+            window.stream = stream;
+            video.srcObject = stream;
+        }
+
+        // Load init
+        init();
+
+        // Draw image
+        var context = canvas.getContext('2d');
+        snap.addEventListener("click", function () {
+            context.drawImage(video, 0, 0, 640, 480);
+        });
+    </script>
+</body>
+
+</html>
