@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="assets/style.css" />
     <style>
         body {
             margin: 0;
@@ -49,48 +50,9 @@
 
         </div>
 
-    </div>
+    </div> 
 
-    <script>
-        'use strict';
-
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const snap = document.getElementById("snap");
-        const errorMsgElement = document.querySelector('span#errorMsg');
-
-        const constraints = {
-            audio: false,
-            video: {
-                width: 720, height: 560
-            }
-        };
-
-        // Access webcam
-        async function init() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                handleSuccess(stream);
-            } catch (e) {
-                errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
-            }
-        }
-
-        // Success
-        function handleSuccess(stream) {
-            window.stream = stream;
-            video.srcObject = stream;
-        }
-
-        // Load init
-        init();
-
-        // Draw image
-        var context = canvas.getContext('2d');
-        snap.addEventListener("click", function () {
-            context.drawImage(video, 0, 0, 640, 480);
-        });
-    </script>
+    <script defer src="assets/snap.js"></script>
 </body>
 
 </html>
